@@ -2,3 +2,7 @@
 base_tier_validation/
 sale_tier_validation/
 customisable_workflow/
+
+openacademy/__pycache__/
+openacademy/controllers/__pycache__/
+openacademy/models/__pycache__/
