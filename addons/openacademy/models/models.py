@@ -23,3 +23,11 @@ class Course(models.Model):
     name = fields.Char(string="Title", requiired=True)
     description = fields.Text()
 
+
+class Session(models.Model):
+    _name = "openacademy.session"
+
+    name = fields.Char("Title", required=True)
+    start_date = fields.Date("Satart Date")
+    duration = fields.Float("Duree", digits=(6, 2), help="Duration in days")
+    seats = fields.Integer("Nommbre de place")
