@@ -16,10 +16,24 @@
                             <page string="Description">
                                 <field name="description"/>
                             </page>
-                            <page string="À propos"></page>
+                            <page string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
                         </notebook>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <!-- ################# View Tree ################# -->
+        <record id="course_view_list" model="ir.ui.view">
+            <field name="name">Courses Tree</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Cours liste">
+                    <field name="name"/>
+                    <field name="responsible_id"/>
+                </tree>
             </field>
         </record>
 
@@ -56,11 +70,11 @@
                                 <field name="name"/>
                                 <field name="instructor_id"/>
                                 <field name="course_id"/>
-                                <field name="seats"/>
                             </group>
                             <group>
                                 <field name="start_date"/>
                                 <field name="duration"/>
+                                <field name="seats"/>
                             </group>
                         </group>
                         <notebook>
