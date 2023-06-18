@@ -1,0 +1,41 @@
+
+<odoo>
+    <data>
+
+        <record id="partner_instructor_view_form" model="ir.ui.view">
+            <field name="name">Contacts</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Sessions">
+                        <group>
+                        <field name="instructor"/>
+                        <field name="session_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="instructor_id"/>
+                                <field name="course_id"/>
+                                <field name="start_date"/>
+                                <field name="duration"/>
+                            </tree>
+                        </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="contact_list_action" model="ir.actions.act_window">
+            <field name="name">Instructor</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <page class="oe_view_nocontent_create">Enregistrer un nouveau Instructeur</page>
+            </field>
+        </record>
+        <menuitem id="configuration_menu" name="Configuration" parent="main_openacademy_menu"/>
+        <menuitem id="contact_menu" name="Contacts" parent="configuration_menu" action="contact_list_action"/>
+
+    </data>
+</odoo>
