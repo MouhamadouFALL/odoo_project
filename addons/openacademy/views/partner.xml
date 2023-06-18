@@ -2,6 +2,19 @@
 <odoo>
     <data>
 
+        <record id="contact_list_action" model="ir.actions.act_window">
+            <field name="name">Instructor</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <page class="oe_view_nocontent_create">Enregistrer un nouveau Instructeur</page>
+            </field>
+        </record>
+
+        <menuitem id="configuration_menu" name="Configuration" parent="main_openacademy_menu"/>
+
+        <menuitem id="contact_menu" name="Contacts" parent="configuration_menu" action="contact_list_action"/>
+
         <record id="partner_instructor_view_form" model="ir.ui.view">
             <field name="name">Contacts</field>
             <field name="model">res.partner</field>
@@ -26,16 +39,24 @@
             </field>
         </record>
 
-        <record id="contact_list_action" model="ir.actions.act_window">
-            <field name="name">Instructor</field>
-            <field name="res_model">res.partner</field>
+
+        <record id="contact_cat_list_action" model="ir.actions.act_window">
+            <field name="name">Contacts Tags</field>
+            <field name="res_model">res.partner.category</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
-                <page class="oe_view_nocontent_create">Enregistrer un nouveau Instructeur</page>
+                <page class="oe_view_nocontent_create">Enregistrer une nouvelle Categorie</page>
             </field>
         </record>
-        <menuitem id="configuration_menu" name="Configuration" parent="main_openacademy_menu"/>
-        <menuitem id="contact_menu" name="Contacts" parent="configuration_menu" action="contact_list_action"/>
+        <menuitem id="contact_cat_menu" name="Contacts Tags" parent="configuration_menu" action="contact_cat_list_action"/>
+
+        <record model="res.partner.category" id="teacher1">
+            <field name="name">Teacher / Level1</field>
+        </record>
+        <record model="res.partner.category" id="teacher2">
+            <field name="name">Teacher / Level2</field>
+        </record>
+
 
     </data>
 </odoo>

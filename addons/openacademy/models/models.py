@@ -36,3 +36,32 @@ class Session(models.Model):
     instructor_id =fields.Many2one("res.partner", domain=['|', ("instructor", "=", True), ('category_id.name', 'ilike', 'Teacher')],string="Instructeur")
     course_id = fields.Many2one("openacademy.course", ondelete="cascade", string="Cours", required=True)
     attendee_ids = fields.Many2many("res.partner", string="Participants")
+    # champs calculés
+    taken_seats = fields.Float("Places occupées", compute="_compute_taken_seats")
+
+    @api.depends("seats", "attendee_ids")
+    def _compute_taken_seats(self):
+
+        for record in self:
+            if not record.seats:
+                record.taken_seats = 0.0
+            else:
+                record.taken_seats = len(record.attendee_ids) * 100 / record.seats
+
+    @api.onchange("seats", "attendee_ids")
+    def _onchange_verify_valid_seats(self):
+        if self.seats < 0:
+            return {
+                'warning': {
+                    'title': "Valeur Incorrecte 'nombre de places' ",
+                    'message': " Le nombre de place disponible ne doit pas être négatif. "
+                }
+            }
+        if self.seats < len(self.attendee_ids):
+            return {
+                'warning': {
+                    'title': "Beaucoup de participant",
+                    'message': "Supprimer des participants supplémentaores ou augmenter le nombre de places"
+                }
+            }
+

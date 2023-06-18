@@ -80,6 +80,7 @@
                                 <field name="start_date"/>
                                 <field name="duration"/>
                                 <field name="seats"/>
+                                <field name="taken_seats" widget="progressbar"/>
                             </group>
                         </group>
                         <notebook>
@@ -96,6 +97,21 @@
                         </notebook>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="session_view_list" model="ir.ui.view">
+            <field name="name">Sessions Tree</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <tree string="Session liste">
+                    <field name="name"/>
+                    <field name="instructor_id"/>
+                    <field name="course_id"/>
+                    <field name="start_date"/>
+                    <field name="duration"/>
+                    <field name="taken_seats" widget="progressbar"/>
+                </tree>
             </field>
         </record>
 
