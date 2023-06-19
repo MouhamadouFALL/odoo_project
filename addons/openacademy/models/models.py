@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from datetime import timedelta
 
 
 # class openacademy(models.Model):
@@ -58,7 +59,10 @@ class Session(models.Model):
     name = fields.Char("Title", required=True)
     start_date = fields.Date("Satart Date")
     duration = fields.Float("Duree", digits=(6, 2), help="Duration in days")
+    end_date = fields.Date("End Date", store=True, compute="_compute_end_date", inverse="_set_end_date")
     seats = fields.Integer("Nommbre de place")
+    active = fields.Boolean(default=True)
+    color = fields.Integer()
     instructor_id =fields.Many2one("res.partner", domain=['|', ("instructor", "=", True), ('category_id.name', 'ilike', 'Teacher')],string="Instructeur")
     course_id = fields.Many2one("openacademy.course", ondelete="cascade", string="Cours", required=True)
     attendee_ids = fields.Many2many("res.partner", string="Participants")
@@ -73,6 +77,29 @@ class Session(models.Model):
                 record.taken_seats = 0.0
             else:
                 record.taken_seats = len(record.attendee_ids) * 100 / record.seats
+
+    @api.depends("start_date", "duration")
+    def _compute_end_date(self):
+        for r in self:
+            if not (r.start_date and r.duration):
+                r.end_date = r.start_date
+                continue
+
+            # Ajoutez une durée à start_date, mais : lundi + 5 jours = samedi, donc
+            # soustrayez une seconde pour obtenir le vendredi à la place
+            # r.end_date = r.start_date + timedelta(days=r.duration)
+            start = fields.Datetime.from_string(r.start_date)
+            duration = timedelta(days=r.duration, seconds=-1)
+            r.end_date = start + duration
+
+    def _set_end_date(self):
+        for r in self:
+            if not (r.start_date and r.end_date):
+                continue
+
+            start_date = fields.Datetime.from_string(r.start_date)
+            end_date = fields.Datetime.from_string(r.end_date)
+            r.duration = (end_date - start_date).days + 1
 
     @api.onchange("seats", "attendee_ids")
     def _onchange_verify_valid_seats(self):
